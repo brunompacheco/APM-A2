@@ -78,26 +78,53 @@
 \renewcommand{\thesection}{\arabic{section}}
 
 \section{Q1. Preliminary Analysis}
+
+\paragraph{\textbf{a)}}
 We begin our analysis by creating two sub-logs of the original event log in a jupyter notebook running pm4py.
 By only leaving traces containing an appeal activity in the first sub-log and only leaving traces without an appeal activity for the second sub-log.
 This allows us to compare metrics of the original log with the newly created sub-logs:
 
+\paragraph{\textbf{b)}}
+
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|l|}
-\hline \textbf{Metric} & \textbf{Original} & \textbf{Appeals} & \textbf{No Appeals} \\
-\hline Number of Traces & 150370 & 4513 & 145857\\
-\hline Number Trace Variants & 231 & 170 &61\\
-\hline Number of Events & 561470 & 29724 & 531746\\
-\hline Average Trace Length & 3.73 & 6.59 & 3.65\\
-\hline Start of Timespan & 01.01.2000 & 03.01.2000 & 01.01.2000\\
-\hline End of Timespan & 18.06.2013 & 14.06.2013 & 18.06.2013\\
-\hline Traces with Dublicate Activities (\%)  & 0.0812 & 0.0252 & 0.0843\\
-\hline
+	\hline \textbf{Metric} & \textbf{Original} & \textbf{Appeals} & \textbf{No Appeals} \\
+	\hline \# Traces & 150370 & 4513 & 145857\\
+	\hline \# Variants & 231 & 170 &61\\
+	\hline \# Events & 561470 & 29724 & 531746\\
+	\hline Average Trace Length & 3.73 & 6.59 & 3.65\\
+	\hline First Event & 01.01.2000 & 03.01.2000 & 01.01.2000\\
+	\hline Last Event & 18.06.2013 & 14.06.2013 & 18.06.2013\\
+	\hline Traces with Duplicate Activities (\%)  & 0.0812 & 0.0252 & 0.0843\\
+	\hline
 \end{tabular}
 \caption{Basic Metrics of the 3 event logs}
 \label{tab:1b}
 \end{table}
+
+\paragraph{\textbf{c)}}
+
+\paragraph{\textbf{d)}} In order to to be able to see the different activity types over time, two dotted charts over the events were created. This was done by importing the filtered event log, containing only cases that did not have an appeal, into ProM. There the LogProjection plugin was used in order to create the two visualizations. The first chart that can be seen in figure \ref{fig:dotted_timestamp} shows the different activity types on the y-axis. For each event, a dot is visible at the point in time when the event occurred. We can therefore observe which types of activities were performed at which time over the whole timespan of the log. \textbf{!!!discussion here!!!}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/dotted_timestamp.png}
+  \caption{Event occurrences for cases without an appeal, grouped by activity type over time.}
+  \label{fig:dotted_timestamp}
+\end{figure}
+
+The second chart that can be seen in figurre \ref{fig:dotted_duration} also shows the different activity types on the y-axis. However the events are now plotted over the case duration at the time that the event occurred. This metric was automatically computed by the plugin. We see that \texttt{Create Fine} is always the first event of every case, as was already discovered in \textbf{c)}. The activity is therefore only observable at the beginning of the chart. \textbf{!!!discussion here!!!}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/dotted_duration.png}
+  \caption{Event occurrences for cases without an appeal, grouped by activity type over the case duration at the time the event occurred.}
+  \label{fig:dotted_duration}
+\end{figure}
+
+\paragraph{\textbf{e)}}
+
 
 Since all lifecycle transitions are complete events the number of events and activities are equal. Furthermore, we computed the absolute and relative frequencies of the activities in each log.
 
