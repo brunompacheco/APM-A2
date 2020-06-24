@@ -105,6 +105,22 @@ This allows us to compare metrics of the original log with the newly created sub
 
 \paragraph{\textbf{c)}}
 
+An overview of the relative frequency of all activities in the three logs can be seen in figure \ref{fig:activity_frequencies}. The raw frequency values can be found in the appendix in table \ref{tab:1c_absolut} and table \ref{tab:1c_relative}. The values were obtained using the \emph{Log Summary} feature of ProM. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/activity_frequencies.png}
+  \caption{The fraction of events of each log grouped by activity.}
+  \label{fig:activity_frequencies}
+\end{figure}
+
+Also using the ProM \emph{Log Summary} feature, it was found that for all three event logs, 100\% of the traces start with the \texttt{Create Fine} activity. The relative frequencies of end activities can be found in figure \ref{fig:end_frequencies}. The exact values for the end activity frequencies can be found in the appendix in table \ref{tab:1c_end}. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/end_frequencies.png}
+  \caption{The fraction of Traces that end with the specified activity in each of the three event logs.}
+  \label{fig:end_frequencies}
+\end{figure}
+
 \paragraph{\textbf{d)}} In order to to be able to see the different activity types over time, two dotted charts over the events were created. This was done by importing the filtered event log, containing only cases that did not have an appeal, into ProM. There, the \emph{LogProjection} plugin was used in order to create the two visualizations. The first chart that can be seen in figure \ref{fig:dotted_timestamp} shows the different activity types on the y-axis.
 For each event, a dot is visible at the point in time when the event occurred. We can therefore observe which types of activities were performed at which time over the whole timespan of the log. In general we can see that there are two main types of activities. Those activities that are performed constantly throughout the year, and those that only occur infrequently. The continually performed activities consist of \texttt{Add Penalty}, \texttt{Create Fine}, \texttt{Insert Fine Notification}, \texttt{Payment} and \texttt{Send Fine} activities. Of those, the \texttt{Create Fine} and \texttt{Payment} activities have no gaps and are therefore always performed. The remaining continuous activities show some gaps over the years. These gaps do not seem to follow a particular pattern and are spread throughout the year. However we see, that the gaps of these activities coincide with each other somehow. The \texttt{Insert Date Appeal to Prefecture}, \texttt{Notify Result Appeal to Offender}, \texttt{Receive Result Appeal from Prefecture} and \texttt{Send for Credit Collection} activities occur much less frequent. The \texttt{Send for Credit Collection} activity seems to only occur once every year, mostly near the beginning or end of the year. The \texttt{Notify Result Appeal to Offender} and \texttt{Receive Result Appeal from Prefecture} activities only start appearing for the first time in 2007, in contrast to the other activities which occur from the beginning of the log. This suggest that they represent a new branch of the process that was introduced in 2007.
 \begin{figure}[H]
@@ -127,6 +143,35 @@ The second chart that can be seen in figure \ref{fig:dotted_duration} also shows
 
 
 Since all lifecycle transitions are complete events the number of events and activities are equal. Furthermore, we computed the absolute and relative frequencies of the activities in each log.
+
+All traces of the original log begin with a 'Create Fine' activity. Therefore, the fraction of traces starting with 'Create Fine' is $1$ and $0$ for all other activities. Of course, this is also the case for both sub-logs. \\
+The following activities are the only activities that occur as end activities of traces:
+
+
+
+Using Tabel \ref{tab:1b} we can compare the tree logs on a basic level. As expected, the majority of
+cases do not contain a appeal event. Only around $3\%$ of traces have an appeal. But since the average trace length is
+significantly longer in the cases with an appeal, the events in the log with appeals are around $5.3\%$ of the original log.
+With 60 unique traces the log with traces is responsible for a disproportionately high trace variety. The original and the log
+without appeals have data starting on the 01.01.2000 until the 18.06.2013. The timespan of the log with appeals is very similar
+only starting a few days later and ending a few days earlier. This is to be expected due to the relatively low amount of traces
+with an appeal. Interestingly, the log with appeals contains far less traces with duplicate activities than the other two logs. \\
+
+Some interesting insights can be gained by looking at the absolute and relative frequencies of specific activities in Table \ref{tab:1c_absolut} and Table \ref{tab:1c_relative}.
+First of all, we can note that there are no appearances of the activities 'Appeal to Judge' or 'Send Appeal to Prefecture' in the log without appeals.
+There are still some activities that should only be in the log with appeals such as 'Notify Result Appeal to Offender' but these occurrences can
+be considered noise and ignored. An open question that could point to a possible problem is the high amount of traces containing 'Send for Credit Collection' in the log without appeals. Especially, when keeping in mind that this activity is batched together. It is very likely that the average
+case duration could be reduced if there were less cases where the fine has to be collected externally. The same thing can also be observed in Table \ref{tab:1c_end}. Furthermore, in the case without appeals, there are many traces ending with a 'Send Fine' event which points to a high number of unpaid fines. Further analysis should investigate if this suspicion is true and what can be done against it.
+
+\section{Q2. Discovery and Conformance}
+
+\section{Q3. Attribute Analysis and Compliance}
+
+\section{Q4. Performance}
+
+\section{Q5. Summary and Conclusion}
+
+\section*{Appendix}
 
 \begin{table}[H]
 \centering
@@ -170,9 +215,6 @@ Since all lifecycle transitions are complete events the number of events and act
 \label{tab:1c_relative}
 \end{table}
 
-All traces of the original log begin with a 'Create Fine' activity. Therefore, the fraction of traces starting with 'Create Fine' is $1$ and $0$ for all other activities. Of course, this is also the case for both sub-logs. \\
-The following activities are the only activities that occur as end activities of traces:
-
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|l|}
@@ -189,30 +231,6 @@ The following activities are the only activities that occur as end activities of
 \caption{Fraction of Traces that end with the Corresponding Activity}
 \label{tab:1c_end}
 \end{table}
-
-Using Tabel \ref{tab:1b} we can compare the tree logs on a basic level. As expected, the majority of
-cases do not contain a appeal event. Only around $3\%$ of traces have an appeal. But since the average trace length is
-significantly longer in the cases with an appeal, the events in the log with appeals are around $5.3\%$ of the original log.
-With 60 unique traces the log with traces is responsible for a disproportionately high trace variety. The original and the log
-without appeals have data starting on the 01.01.2000 until the 18.06.2013. The timespan of the log with appeals is very similar
-only starting a few days later and ending a few days earlier. This is to be expected due to the relatively low amount of traces
-with an appeal. Interestingly, the log with appeals contains far less traces with duplicate activities than the other two logs. \\
-
-Some interesting insights can be gained by looking at the absolute and relative frequencies of specific activities in Table \ref{tab:1c_absolut} and Table \ref{tab:1c_relative}.
-First of all, we can note that there are no appearances of the activities 'Appeal to Judge' or 'Send Appeal to Prefecture' in the log without appeals.
-There are still some activities that should only be in the log with appeals such as 'Notify Result Appeal to Offender' but these occurrences can
-be considered noise and ignored. An open question that could point to a possible problem is the high amount of traces containing 'Send for Credit Collection' in the log without appeals. Especially, when keeping in mind that this activity is batched together. It is very likely that the average
-case duration could be reduced if there were less cases where the fine has to be collected externally. The same thing can also be observed in Table \ref{tab:1c_end}. Furthermore, in the case without appeals, there are many traces ending with a 'Send Fine' event which points to a high number of unpaid fines. Further analysis should investigate if this suspicion is true and what can be done against it.
-
-\section{Q2. Discovery and Conformance}
-
-\section{Q3. Attribute Analysis and Compliance}
-
-\section{Q4. Performance}
-
-\section{Q5. Summary and Conclusion}
-
-\section*{Appendix}
 
 \end{document}
 
