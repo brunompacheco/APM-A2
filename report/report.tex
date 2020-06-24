@@ -80,28 +80,30 @@
 \section{Q1. Preliminary Analysis}
 
 \paragraph{\textbf{a)}}
-We begin our analysis by creating two sub-logs of the original event log in a jupyter notebook running pm4py.
+We begin our analysis by creating two sub-logs of the original event log in a jupyter notebook using pm4py.
 By only leaving traces containing an appeal activity in the first sub-log and only leaving traces without an appeal activity for the second sub-log.
 This allows us to compare metrics of the original log with the newly created sub-logs:
 
 \paragraph{\textbf{b)}}
-
+For the three logs obtained in the previous step, we compute some core descriptive metrics. All of the resulting values can be found in \ref{tab:1b}.
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|l|}
-	\hline \textbf{Metric} & \textbf{Original} & \textbf{Appeals} & \textbf{No Appeals} \\
-	\hline \# Traces & 150370 & 4513 & 145857\\
-	\hline \# Variants & 231 & 170 &61\\
-	\hline \# Events & 561470 & 29724 & 531746\\
+	\hline \textbf{Metric} & \textbf{Complete} & \textbf{Only Appeals} & \textbf{Without Appeals} \\
+	\hline Number of Traces & 150,370 & 4,513 & 145,857\\
+	\hline Number of Variants & 231 & 170 &61\\
+	\hline Number of Events & 561,470 & 29,724 & 531,746\\
 	\hline Average Trace Length & 3.73 & 6.59 & 3.65\\
-	\hline First Event & 01.01.2000 & 03.01.2000 & 01.01.2000\\
-	\hline Last Event & 18.06.2013 & 14.06.2013 & 18.06.2013\\
-	\hline Traces with Duplicate Activities (\%)  & 0.0812 & 0.0252 & 0.0843\\
+	\hline First Event Date & 01.01.2000 & 03.01.2000 & 01.01.2000\\
+	\hline Last Event Date & 18.06.2013 & 14.06.2013 & 18.06.2013\\
+	\hline Number of Activities & 11 & 9 & 11 \\
+	\hline Traces with Duplicate Activities  & 0.0812 \% & 0.0252 \% & 0.0843 \%\\
 	\hline
 \end{tabular}
-\caption{Basic Metrics of the 3 event logs}
+\caption{Some basic Metrics of the three event logs.}
 \label{tab:1b}
 \end{table}
+The \emph{Number of Traces}, \emph{Number of Events} and \emph{Number of Activities} metrics were obtained through the \emph{Log Summary} feature of ProM. The \emph{Number of Variants}, \emph{Average Trace Length} and \emph{First/Last Event Date} were computed using the \emph{Explore Event Log} feature of ProM. Additionally the number of traces that are containing duplicate activities were computed using a custom Python script.
 
 \paragraph{\textbf{c)}}
 
@@ -141,15 +143,12 @@ The second chart that can be seen in figure \ref{fig:dotted_duration} also shows
 
 \paragraph{\textbf{e)}}
 
-
-Since all lifecycle transitions are complete events the number of events and activities are equal. Furthermore, we computed the absolute and relative frequencies of the activities in each log.
-
 All traces of the original log begin with a 'Create Fine' activity. Therefore, the fraction of traces starting with 'Create Fine' is $1$ and $0$ for all other activities. Of course, this is also the case for both sub-logs. \\
 The following activities are the only activities that occur as end activities of traces:
 
 
 
-Using Tabel \ref{tab:1b} we can compare the tree logs on a basic level. As expected, the majority of
+Using Table \ref{tab:1b} we can compare the tree logs on a basic level. As expected, the majority of
 cases do not contain a appeal event. Only around $3\%$ of traces have an appeal. But since the average trace length is
 significantly longer in the cases with an appeal, the events in the log with appeals are around $5.3\%$ of the original log.
 With 60 unique traces the log with traces is responsible for a disproportionately high trace variety. The original and the log
@@ -176,7 +175,7 @@ case duration could be reduced if there were less cases where the fine has to be
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|l|}
-\hline \textbf{Activity} & \textbf{Original} & \textbf{Appeals} & \textbf{No Appeals} \\
+\hline \textbf{Activity} & \textbf{Complete} & \textbf{Only Appeals} & \textbf{Without Appeals} \\
 \hline Add penalty & 79860 & 4357 & 75503\\
 \hline Appeal to Judge & 555 & 555 &0\\
 \hline Create Fine & 150370 & 4513 & 145857\\
@@ -197,7 +196,7 @@ case duration could be reduced if there were less cases where the fine has to be
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|l|}
-\hline \textbf{Activity} & \textbf{Original} & \textbf{Appeals} & \textbf{No Appeals} \\
+\hline \textbf{Activity} & \textbf{Complete} & \textbf{Only Appeals} & \textbf{Without Appeals} \\
 \hline Add penalty & 0.142234 & 0.146582 & 0.141991\\
 \hline Appeal to Judge & 0.000988 & 0.018672 &0\\
 \hline Create Fine & 0.267815 & 0.151830 & 0.274298\\
@@ -218,7 +217,7 @@ case duration could be reduced if there were less cases where the fine has to be
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|l|}
-\hline \textbf{Activity} & \textbf{Original} & \textbf{Appeals} & \textbf{No Appeals} \\
+\hline \textbf{Activity} & \textbf{Complete} & \textbf{Only Appeals} & \textbf{Without Appeals} \\
 \hline Payment  & 0.446904 & 0.154443 & 0.455953\\
 \hline Send for Credit Collection & 0.392346 & 0.087747 & 0.401770\\
 \hline Send Fine  & 0.138026 & 0.001551 & 0.142249\\
