@@ -151,19 +151,26 @@ An open question that could point to a possible problem is the high amount of tr
 \section{Q2. Discovery and Conformance}
 
 \paragraph{\textbf{a)}}
+As discovered in Q1 there are remaining appeal related activities in the filtered version of the event log that should not contain any appeals. We identified two types of traces that contain such events. One type where we assume that the \texttt{Send Appeal to Prefecture} activity was falsely not recorded and one type where the offender decided to pay the fine before the appeal was sent. The former traces are not correctly assigned to the log without appeals. In order to obtain a meaningful process model for cases without appeals they are therefore removed from the log before mining for a process model. The other type of traces are kept, in order to represent initiated appeals that were not actually sent.
+
+In order to obtain a process model for the process without appeals, the Inductive Miner was applied. It was chosen because it can discover more complex process constructs than for example the Alpha Miner and can also represent infrequent behaviour (such as the \texttt{Insert Date Appeal to Prefecture}) activity discussed above. The discovered model can be found in figure \ref{fig:im_no_appeals}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/im_no_appeals.png}
   \caption{Process model discovered from the log without any appeals using the inductive miner.}
   \label{fig:im_no_appeals}
 \end{figure}
+In respect to the given process the discovered model is very simple and contains the most prominent process variants. The most important process paths can be seen at a glance. A number of possible process executions is not represented in the model. In general the model is very specific to the log and does not allow for much additional behaviour, it therefore does not generalize as well. Behaviours such as repeated activities (which is for example frequent for the \texttt{Payment} activity) are not modeled at all and can therefore not be expressed using the model. This tradeoff was chosen in order to obtain an easy to understand and simple model. This is important as we do not have access to domain experts, who might be able to better comprehend a model that allows for more behaviour. 
+
+For the sub-log containing only appeals cases, a different mining approach was used. Instead of the Inductive Miner, the Interactive Data-Aware Heuristic Miner was used. This was done because the Inductive Miner would produce a hard to comprehend complex model that allowed for a great amount of additional behaviour. Most of the activities were used in a parallel construct that completely removed any ordering from the process execution. Additionally the \texttt{Appeal to Judge} activity was optional, but could be combined with the appeal to prefecture flow. This behaviour is not wanted, as the two types of appeals are completely separate from another. The obtained model for the appeal cases can be seen in figure \ref{fig:idhm_appeals}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/idhm_appeals.png}
-  \caption{Process model discovered from the log containing only appeals using the Interactive Data-Aware Heuristic Miner miner.}
+  \caption{Process model discovered from the log containing only appeals using the Interactive Data-Aware Heuristic Miner.}
   \label{fig:idhm_appeals}
 \end{figure}
+The Interactive Data-Aware Heuristic Miner was chosen because it allows for a direct manipulation of the algorithm parameters. In this way the parameters could be tweaked in such a way, that a simple process model was obtained, that separates the two possible flows and gives a clear ordering to the activities. Again, because of its simplicity the model is not able to generalize very well. 
 
 \paragraph{\textbf{b)}}
 
