@@ -189,6 +189,12 @@ The model for the cases containing appeals can be found in figure \ref{fig:im_ap
 
 \section{Q3. Attribute Analysis and Compliance}
 
+In this tasks we are analyzing the payment of Fines. For this purpose we are only interested in cases without appeal to overly complicate. We are assuming here that the activity \texttt{Send for Credit Collection} always ends in a complete payment of the Fine.
+
+\paragraph{\textbf{a)}}
+
+First of all we are investigating which fraction of fines gets payed properly and which fraction is over or under payed. We accomplish this by using a custom jupyter notebook. The total amount that has to be payed can be computed taking the maximum of the amount for the case and andding the sum of all expenses. By taking the maximal value of the column 'totalPaymentAmount' it is also possible to get the payments that the police department has received so far. Given these values it is possible to compute that approximately $80.3\%$ of traces result in a exact payment, $14.0\%$ of traces result in a no payment at all, $4.7\%$ of traces result in some but insufficient payment and $1.0\%$ of traces result in a over payment. All in all, this leads to a loss of $ \$ 1,438,950.6$ for the police department. Assuming that the police department eventually has to repay the over payments this loss rises to $ \$ 1,459,775.5 \$ $.
+
 \section{Q4. Performance}
 
 \section{Q5. Summary and Conclusion}
