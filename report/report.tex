@@ -230,7 +230,22 @@ First of all we are investigating which fraction of fines gets payed properly an
 
 \paragraph{\textbf{b)}}
 
-\paragraph{\textbf{b)}}
+The two process models that were obtained for the two sub-processes with- and without appeals in Q2 are now enriched with additional performance information. This was done using pm4py as well as the \emph{Multi-perspective Process Explorer} of ProM. While the results were mostly similar between the two approaches, there were some deviations between the resulting models. For example the two methods reported different values for the \texttt{Payment} activity. This is most likely caused by the repeated \texttt{Payment} activities that happen in some traces. Since both of the methods need to align the traces in order to replay them on the process model, it is likely that they treated these repetitions differently, which in turn lead to differing results. In the following we will discuss the model obtained with ProM which can be seen in figures \ref{fig:no_appeals_performance_prom} and \ref{fig:appeals_performance_prom}, since the resolution of the results is higher than in pm4py, which aggressively rounds the resulting times. Additionally the model also includes information about the median time. For comparison the model obtained with pm4py can be found in the appendix in figures \ref{fig:no_appeals_performance} and \ref{fig:appeals_performance}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/no_appeals_performance_prom.png}
+  \caption{The process model discovered in Q2 for the cases without appeal, enriched with performance information. The number on an edge describes the mean time between the activities and the number in brackets the median time.}
+  \label{fig:no_appeals_performance_prom}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/appeals_performance_prom.png}
+  \caption{The process model discovered in Q2 for the cases with an appeal, enriched with performance information. The number on an edge describes the mean time between the activities and the number in brackets the median time.}
+  \label{fig:appeals_performance_prom}
+\end{figure}
+
+\paragraph{\textbf{c)}}
 
 \section{Q5. Summary and Conclusion}
 
@@ -294,6 +309,20 @@ First of all we are investigating which fraction of fines gets payed properly an
 \caption{Fraction of Traces that end with the Corresponding Activity}
 \label{tab:1c_end}
 \end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/no_appeals_performance.png}
+  \caption{The process model discovered in Q2 for the cases without appeal, enriched with performance information using pm4py. The number on an edge describes the mean time between the activities.}
+  \label{fig:no_appeals_performance}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/appeals_performance.png}
+  \caption{The process model discovered in Q2 for the cases with an appeal, enriched with performance information using pm4py. The number on an edge describes the mean time between the activities.}
+  \label{fig:appeals_performance}
+\end{figure}
 
 \end{document}
 
