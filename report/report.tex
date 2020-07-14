@@ -95,7 +95,7 @@ For the three logs obtained in the previous step, we compute some core descripti
 	\hline First Event Date & 01.01.2000 & 03.01.2000 & 01.01.2000\\
 	\hline Last Event Date & 18.06.2013 & 14.06.2013 & 18.06.2013\\
 	\hline Number of Activities & 11 & 11 & 9 \\
-	\hline Traces with Duplicate Activities  & 0.0812 \% & 0.0252 \% & 0.0843 \%\\
+	\hline Traces with Duplicate Activities  & 5.02 \% & 1.73 \% & 5.12 \%\\
 	\hline
 \end{tabular}
 \caption{Some basic Metrics of the three event logs.}
@@ -113,7 +113,18 @@ An overview of the relative frequency of all activities in the three logs can be
   \label{fig:activity_frequencies}
 \end{figure}
 
-Also using the ProM \emph{Log Summary} feature, it was found that for all three event logs, 100\% of the traces start with the \texttt{Create Fine} activity. The relative frequencies of end activities can be found in figure \ref{fig:end_frequencies}. The exact values for the end activity frequencies can be found in the appendix in table \ref{tab:1c_end}. 
+We also investigate the frequency of each activity in regard to the traces, that is, how frequent are traces that contain a certain activity. This can be visualized in figure \ref{fig:figures-activity_trace_frequencies-png} and it was generated using Python libraries \emph{pandas} and \emph{seaborn}. Raw values can be found in the appendix in table \ref{tab:1c_traces}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/activity_trace_frequencies.png}
+    \caption{Fraction of traces that contain each event.}
+    \label{fig:figures-activity_trace_frequencies-png}
+\end{figure}
+
+We note that the \texttt{Create Fine} activity is present in all traces, which, together with the interpretation of the activity, leads us to understand it as the mandatory start activity of the process. This was then verified using the ProM \emph{Log Summary} feature. It is also possible to note the relation of the \texttt{Send Fine} activity with the appeal activities, once it is present in all traces of this sub-log.
+
+The relative frequencies of end activities can be found in figure \ref{fig:end_frequencies}. The exact values for the end activity frequencies can be found in the appendix in table \ref{tab:1c_end}. 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/end_frequencies.png}
@@ -153,16 +164,16 @@ An open question that could point to a possible problem is the high amount of tr
 \paragraph{\textbf{a)}}
 As discovered in Q1 there are remaining appeal related activities in the filtered version of the event log that should not contain any appeals. We identified two types of traces that contain such events. One type where we assume that the \texttt{Send Appeal to Prefecture} activity was falsely not recorded and one type where the offender decided to pay the fine before the appeal was sent. The former traces are not correctly assigned to the log without appeals. In order to obtain a meaningful process model for cases without appeals they are therefore removed from the log before mining for a process model. The other type of traces are kept, in order to represent initiated appeals that were not actually sent.
 
-In order to obtain a process model for the process without appeals, the Inductive Miner was applied. It was chosen because it can discover more complex process constructs than for example the Alpha Miner and can also represent infrequent behaviour (such as the \texttt{Insert Date Appeal to Prefecture}) activity discussed above. The discovered model can be found in figure \ref{fig:im_no_appeals}.
+In order to obtain a process model for the process without appeals, the Inductive Miner was applied. It was chosen because it can discover more complex process constructs than, for example, the Alpha Miner and can also represent infrequent behaviour (such as the \texttt{Insert Date Appeal to Prefecture}) activity discussed above. The discovered model can be found in figure \ref{fig:im_no_appeals}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/im_no_appeals.png}
   \caption{Process model discovered from the log without any appeals using the inductive miner.}
   \label{fig:im_no_appeals}
 \end{figure}
-In respect to the given process the discovered model is simple and contains the most prominent process variants. The most important process paths can be seen at a glance. This subjective simplicity is supported by the computed simplicity value of 0.71. A number of possible process executions is not represented in the model. In general the model is very specific to the log and does not allow for much additional behaviour, it therefore subjectively does not generalize as well. Behaviours such as repeated activities (which is for example frequent for the \texttt{Payment} activity) are not modelled at all and can therefore not be expressed using the model. This tradeoff was chosen in order to obtain an easy-to-understand and simple model. This is important as we do not have access to domain experts, who might be able to better comprehend a model that allows for more behaviour.  However, the computed score for generalization of 0.91 is very good, this is probably caused by the many silent transitions that allow to skip many of the activities. 
+In respect to the given process the discovered model is simple and contains the most prominent process variants. The most important process paths can be seen at a glance. This subjective simplicity is supported by the computed simplicity value of 0.71. A number of possible process executions is not represented in the model. In general, the model is very specific to the log and does not allow for much additional behaviour beyond omissions allowed by the silent transitions, it therefore subjectively does not generalize well. Behaviours such as repeated activities (which is for example frequent for the \texttt{Payment} activity) are not modelled at all and can therefore not be expressed using the model. This tradeoff was chosen in order to obtain an easy-to-understand and simple model. This is important as we do not have access to domain experts, who might be able to better comprehend a model that allows for more behaviour.  However, the computed score for generalization of 0.91 is very good, this is probably caused by the many silent transitions that allow to skip many of the activities. 
 
-For the sub-log containing only appeals cases, a different mining approach was applied at first. Instead of the Inductive Miner, the Interactive Data-Aware Heuristic Miner (IDHM) was used. This was done because the Inductive Miner resulted in a model that positioned many activities in a parallel construct, which reduced the amount of ordering information contained in the model. While the model discovered using the IDHM was better in that regard, it was neither safe nor sound. As we want to perform further analysis on the obtained model in future tasks, this is not ideal. Because of this problem of the IDHM approach, it was finally discarded. In order to obtain a sound model, the Inductive Miner was used again. The infrequent inductive miner approach of ProM was chosen, with a noise threshold of 0.1. By tweaking the noise parameter, it was possible to obtain a model that preserved more information about the ordering of activities. The final model can be seen in figure \ref{fig:im_appeals}.
+For the sub-log containing only appeal cases, a different mining approach was applied at first. Instead of the Inductive Miner, the Interactive Data-Aware Heuristic Miner (IDHM) was used. This was done because the Inductive Miner resulted in a model that positioned many activities in a parallel construct, which reduced the amount of ordering information contained in the model. While the model discovered using the IDHM was better in that regard, it was neither safe nor sound. As we want to perform further analysis on the obtained model in future tasks, this is not ideal. Because of this problem of the IDHM approach, it was finally discarded. In order to obtain a sound model, the Inductive Miner was used again. The infrequent inductive miner approach of ProM was chosen, with a noise threshold of 0.1. By tweaking the noise parameter, it was possible to obtain a model that preserved more information about the ordering of activities. The final model can be seen in figure \ref{fig:im_appeals}.
 
 \begin{figure}[H]
   \centering
@@ -247,30 +258,37 @@ In conclusion, the amount to be payed is roughly doubled 100-200 days after the 
 
 \paragraph{\textbf{a)}}
 
+Similar to Q2, we created two dotted charts that display the occurrence of activities over time using ProM. The first chart that can be seen in figure \ref{fig:dotted_timestamp_appeals} displays the occurrences of activities over time, based on the timestamp of the events. As already noted in the dotted charts for the cases without appeals, we again see that the \texttt{Send For Credit Collection} activity is only performed once per year. This could cause a long waiting time for cases that are ready for credit collection early/late in the year. To further investigate this we consider only cases that contain the \texttt{Send For Credit Collection} activity (10\% of cases) and calculate the average time that passes between this activity and the prior activity. We find that the average waiting time is 690 days, which amounts to about half of the complete case duration of these cases, so a considerable amount. Since the credit collections are performed on an almost yearly basis, this number is surprising as this means that in some cases one credit collection opportunity is skipped. We assume that this is because of a minimum waiting time that gives the offender the opportunity to make the payment, before it is forcefully collected. Based on the dotted chart we see that the first credit collection events occur 1 year after the first \texttt{Notify Result Appeal to Offender} events, we therefore assume that the minimum waiting time for a credit collection is 1 year. However compared to this, the average observed waiting time is still very high.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/dotted_timestamp_appeals.png}
   \caption{Event occurrences for cases with an appeal, grouped by activity type over time.}
   \label{fig:dotted_timestamp_appeals}
 \end{figure}
+We exercised possible improvements to this problem by either increasing the frequency of credit collections or reducing the minimum waiting time. We find that for the given cases, a strict half-yearly schedule for credit collections with a 1 year minimum waiting time would result in an average waiting time of 440 days, which is considerably lower than the current average. If additionally the minimum waiting time would be decreased to 180 days, the average waiting time reduces to 266 days. We see that it is possible to increase the overall case performance for these cases by tweaking the mentioned parameters. The other activities are spread evenly throughout the covered timespan and no additional patterns could be discovered in the chart depicted in figure \ref{fig:dotted_timestamp_appeals}.
 
+The second chart that can be found in figure \ref{fig:dotted_duration_appeals} shows the activity occurrences based on the current duration of the case at the time that the event occurred. In respect of performance we are interested in activities that occur late in the process as this might indicate a long waiting time for the activity. Some of the activities are not controlled by the police department but depend on an outside party such as the offender. This includes the \texttt{Receive Result Appeal from Prefecture} activity as well as the \texttt{Payment}, \texttt{Appeal to Judge} and \texttt{Insert Date Appeal to Prefecture} activities as they can only be initiated by the offender. The police department has no influence on these activities and we will therefore not consider them any further. However the relationship between these events and related events of the police department (\texttt{Notify Result Appeal to Offender}, \texttt{Send Appeal to Prefecture}) is interesting.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/dotted_duration_appeals.png}
   \caption{Event occurrences for cases with an appeal, grouped by activity type over the case duration at the time the event occurred.}
   \label{fig:dotted_duration_appeals}
 \end{figure}
+Considering the \texttt{Send Appeal to Prefecture} activity, we observe that it often occurs very late in the case, although it is dependent on the \texttt{Insert Date Appeal to Prefecture} which in most cases occurs much earlier. This points to the fact that the appeal was already initiated by the offender, but not yet processed by the police department. This may cause an unnecessary delay in the process. We also note that after some point in the case duration, appeals are still send but no appeals results are received. This is most probably caused by the fact that cases without an \texttt{Receive Result Appeal to Prefecture} activity were successful appeals, as already noted in Q1. We calculate the mean waiting time between the \texttt{Insert Date Appeal to Prefecture} and \texttt{Send Appeal to Prefecture} activities as 203 days, with a maximum waiting time of over 10 years. We see that there is a large opportunity for performance improvements regarding this part of the process, as it would have been assumed that the appeal can be sent immediately after it is received from the offender which is obviously not the case. We also investigated the similar relationship between \texttt{Receive Result Appeal to Prefecture} and \texttt{Notify Result Appeal to Offender} further. In this case a much more reasonable mean waiting time of 32 days was calculated. However the waiting time is still not as low as would be expected for a simple notification task and the maximum waiting time of 193 days is still considerable. We see that there are large performance gains possible on tasks that include a handover of work between the police department and other parties. 
 
 \paragraph{\textbf{b)}}
 
-The two process models that were obtained for the two sub-processes with- and without appeals in Q2 are now enriched with additional performance information. This was done using pm4py as well as the \emph{Multi-perspective Process Explorer} of ProM. While the results were mostly similar between the two approaches, there were some deviations between the resulting models. For example the two methods reported different values for the \texttt{Payment} activity. This is most likely caused by the repeated \texttt{Payment} activities that happen in some traces. Since both of the methods need to align the traces in order to replay them on the process model, it is likely that they treated these repetitions differently, which in turn lead to differing results. In the following we will discuss the model obtained with ProM which can be seen in figures \ref{fig:no_appeals_performance_prom} and \ref{fig:appeals_performance_prom}, since the resolution of the results is higher than in pm4py, which aggressively rounds the resulting times. Additionally the model also includes information about the median time. For comparison the model obtained with pm4py can be found in the appendix in figures \ref{fig:no_appeals_performance} and \ref{fig:appeals_performance}.
+The two process models that were obtained for the two sub-processes with- and without appeals in Q2 are now enriched with additional performance information. This was done using pm4py as well as the \emph{Multi-perspective Process Explorer} of ProM. While the results were mostly similar between the two approaches, there were some deviations between the resulting models. For example the two methods reported different values for the \texttt{Payment} activity. This is most likely caused by the repeated \texttt{Payment} activities that happen in some traces. Since both of the methods need to align the traces in order to replay them on the process model, it is likely that they treated these repetitions differently, which in turn lead to differing results. In the following we will discuss the models obtained with ProM which can be seen in figures \ref{fig:no_appeals_performance_prom} and \ref{fig:appeals_performance_prom}, since the resolution of the results is higher than in pm4py, which aggressively rounds the resulting times. Additionally the model also includes information about the median time. For comparison the model obtained with pm4py can be found in the appendix in figures \ref{fig:no_appeals_performance} and \ref{fig:appeals_performance}. For both used methods it holds that the used performance metric is the time between the events as the log contains no information on the actual duration of the activities in the form of a start and end event for each activity.
+
+In the model for the cases without appeals that can be found in figure \ref{fig:no_appeals_performance_prom}, we see that the activity with the highest waiting time is the \texttt{Send for Credit Collection} activity. The activity has a mean waiting time of 1.4 years which is a considerable fraction of the overall case duration. The second longest activity is the \texttt{Send Fine} activity with a mean duration of 87.5 days. Since this is a reminder for the offender, it would have been expected that reminders are always sent after a certain amount of time. We see that the penalty is always added exactly after 60 days (\texttt{Add Penalty}), which is most probably the deadline after which a payment has to be made by the offender. This deadline can most probably not be shortened and therefore offers no possibility for process improvement. The time between the \texttt{Send Fine} and \texttt{Insert Fine Notification} activities most probably represents the time that the notification spends in the mail, which is not directly influenceable by the police department. For the \texttt{Insert Date Appeal to Prefecture} activity a rather high duration of 78.1 days was found, which as mentioned before is fully depending on the offender and cannot be influenced by the police department.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/no_appeals_performance_prom.png}
   \caption{The process model discovered in Q2 for the cases without appeal, enriched with performance information. The number on an edge describes the mean time between the activities and the number in brackets the median time.}
   \label{fig:no_appeals_performance_prom}
 \end{figure}
-
+In the model of the appeals cases that was enhanced with performance data in figure \ref{fig:appeals_performance_prom} we see four activities with long durations and bad performance. The first of these activities is \texttt{Receive Result Appeal from Offender} with a mean duration of 132.1 days. Since the duration of this event consists of the time that the appeal is handled by the prefecture, the police department has no influence on it and it will not be considered in more detail here. Similar the duration of the \texttt{Payment} activity (228.9 days) is solely influenced by the offender. The \texttt{Send Appeal to Prefecture} (267.5 days) and \texttt{Notify Result Appeal to Offender} (127.7 days) activities were already discussed more closely in \textbf{a)}. The findings in the annotated model support the prior findings and reinforce the importance of these activities for the overall process performance. \texttt{Send for Credit Collection} was again the worst performing activity with a mean duration of 1.9 years.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/appeals_performance_prom.png}
@@ -278,7 +296,14 @@ The two process models that were obtained for the two sub-processes with- and wi
   \label{fig:appeals_performance_prom}
 \end{figure}
 
+
 \paragraph{\textbf{c)}}
+
+In summary we can conclude that the performance problems of the process are related to either the payment of the fine (\texttt{Payment}, \texttt{Send for Credit Collection}), or activities that are related to a handover of work from the police department to another party (or vice versa). The payment could be speed up by sending additional reminders to the offender, as a single reminder can be not noticed or noticed too late. However it is not clear how the cost-reward function looks for this measure, as additional reminders also introduce additional overhead which can already seen with the single reminder that is currently send. For about 10\% of the cases, the performance could be greatly increased by restructuring the credit collection process, as already discussed in \textbf{a)}. Increasing the credit collection to a half-yearly cycle would already be hugely beneficial. In addition it would be recommended to reduce the deadline for credit collection from 1 year to at least 3/4 year or even half a year, as most of the payments already occur during this time, meaning a chance of a successful payment decreases with time. This measure could reduce the duration of the activity by about 60\%.
+
+For the \texttt{Send Appeal to Prefecture} and \texttt{Notify Result Appeal to Offender} activities, internal deadlines could be introduce that regulate the time that a case can idle before one of these activities is performed. It is crucial that the time that these "trivial" activities occupy is drastically reduced in order to improve process performance. The data suggests that some cases may simply be "forgotten" or "lost" and are therefore severely delayed before they are actually processed. By introducing mandatory deadlines for these activities the process could become more streamlined, resulting in less waiting time. Based on the current median duration for appeals cases we suggest a deadline of 90 days for the sending the appeal after it has been received from the offender. For notifying the offender of the appeal result we suggest a deadline of 60 days, similar to the penalty activity, as there is not a large amount of work involved on the side of the police department when only sending a notification.
+
+A standardized deadline for the sending of the reminder should be implemented, similar to that of the penalty. Considering the current duration of the \texttt{Send Fine} activity a similar deadline such as 60 days could lead to faster performance and a more standardized and therefore organized process. (It is clear when which activity has to be performed.) Most offenders would not be affected negatively by this change as the median payment time in cases without appeal is only 7 days. Therefore this change offers the opportunity to improve process performance without negatively impacting more responsible offenders.
 
 \section{Q5. Summary and Conclusion}
 
@@ -324,6 +349,27 @@ The two process models that were obtained for the two sub-processes with- and wi
 \end{tabular}
 \caption{Relative Frequencies of Activities in the Event Logs}
 \label{tab:1c_relative}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+	\hline \textbf{Activity} & \textbf{Complete} & \textbf{Only Appeals} & \textbf{Without Appeals} \\
+	\hline Add penalty                           &           0.531090 &           0.965433 &           0.517651 \\
+	\hline Appeal to Judge                       &           0.003691 &           0.122978 &           0 \\
+	\hline Create Fine                           &           1.000000 &           1.000000 &           1.000000 \\
+	\hline Insert Date Appeal to Prefecture      &           0.027851 &           0.918679 &           0.000288 \\
+	\hline Insert Fine Notification              &           0.531090 &           0.965433 &           0.517651 \\
+	\hline Notify Result Appeal to Offender      &           0.005959 &           0.191225 &           0.000226 \\
+	\hline Payment                               &           0.463623 &           0.162198 &           0.472950 \\
+	\hline Receive Result Appeal from Prefecture &           0.006644 &           0.213605 &           0.000240 \\
+	\hline Send Appeal to Prefecture             &           0.027539 &           0.917571 &           0 \\
+	\hline Send Fine                             &           0.691541 &           1.000000 &           0.681997 \\
+	\hline Send for Credit Collection            &           0.392452 &           0.091292 &           0.401770 \\
+	\hline
+    \end{tabular}
+    \caption{Relative frequencies of traces that contain each activity}
+    \label{tab:1c_traces}
 \end{table}
 
 \begin{table}[H]
