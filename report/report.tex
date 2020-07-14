@@ -113,7 +113,18 @@ An overview of the relative frequency of all activities in the three logs can be
   \label{fig:activity_frequencies}
 \end{figure}
 
-Also using the ProM \emph{Log Summary} feature, it was found that for all three event logs, 100\% of the traces start with the \texttt{Create Fine} activity. The relative frequencies of end activities can be found in figure \ref{fig:end_frequencies}. The exact values for the end activity frequencies can be found in the appendix in table \ref{tab:1c_end}. 
+We also investigate the frequency of each activity in regard to the traces, that is, how frequent are traces that contain a certain activity. This can be visualized in figure \ref{fig:figures-activity_trace_frequencies-png} and it was generated using Python libraries \emph{pandas} and \emph{seaborn}. Raw values can be found in the appendix in table \ref{tab:1c_traces}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/activity_trace_frequencies.png}
+    \caption{Fraction of traces that contain each event.}
+    \label{fig:figures-activity_trace_frequencies-png}
+\end{figure}
+
+We note that the \texttt{Create Fine} activity is present in all traces, which, together with the interpretation of the activity, leads us to understand it as the mandatory start activity of the process. This was then verified using the ProM \emph{Log Summary} feature. It is also possible to note the relation of the \texttt{Send Fine} activity with the appeal activities, once it is present in all traces of this sub-log.
+
+The relative frequencies of end activities can be found in figure \ref{fig:end_frequencies}. The exact values for the end activity frequencies can be found in the appendix in table \ref{tab:1c_end}. 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/end_frequencies.png}
@@ -305,6 +316,27 @@ A standardized deadline for the sending of the reminder should be implemented, s
 \end{tabular}
 \caption{Relative Frequencies of Activities in the Event Logs}
 \label{tab:1c_relative}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+	\hline \textbf{Activity} & \textbf{Complete} & \textbf{Only Appeals} & \textbf{Without Appeals} \\
+	\hline Add penalty                           &           0.531090 &           0.965433 &           0.517651 \\
+	\hline Appeal to Judge                       &           0.003691 &           0.122978 &           0 \\
+	\hline Create Fine                           &           1.000000 &           1.000000 &           1.000000 \\
+	\hline Insert Date Appeal to Prefecture      &           0.027851 &           0.918679 &           0.000288 \\
+	\hline Insert Fine Notification              &           0.531090 &           0.965433 &           0.517651 \\
+	\hline Notify Result Appeal to Offender      &           0.005959 &           0.191225 &           0.000226 \\
+	\hline Payment                               &           0.463623 &           0.162198 &           0.472950 \\
+	\hline Receive Result Appeal from Prefecture &           0.006644 &           0.213605 &           0.000240 \\
+	\hline Send Appeal to Prefecture             &           0.027539 &           0.917571 &           0 \\
+	\hline Send Fine                             &           0.691541 &           1.000000 &           0.681997 \\
+	\hline Send for Credit Collection            &           0.392452 &           0.091292 &           0.401770 \\
+	\hline
+    \end{tabular}
+    \caption{Relative frequencies of traces that contain each activity}
+    \label{tab:1c_traces}
 \end{table}
 
 \begin{table}[H]
