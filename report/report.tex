@@ -312,6 +312,40 @@ A standardized deadline for the sending of the reminder should be implemented, s
 
 \section{Q5. Summary and Conclusion}
 
+- Input analysis:
+    - data is in good state, not too much noise
+    - data acquisition since 2000 has paid off as it is possible to generate concise models and have a good understanding of the several faces of the process
+    - some noise exists, more than once we found process executions (traces) that were missing an activity that was necessary given the previous and following
+    - even though some noise exists, the data was very clean and not much preprocessing was necessary (we assume the data received came straight from the client), so the acquisition process is good
+    - one suggestion from the team to the acquisition process is for the registering of the closing of a case as a specific activity, like "Fine Dismissed", as it improves the inference from the data
+- process split in two, with and without appeal
+    - not only a technical split, but a split because of the nature of the process
+    - Besides the extra activities
+    - traces with appeal take twice as much time
+    - traces with appeal have a much bigger diversity
+- this way, we understand the process through the two models seen in figure X and Y (without and with appeals)
+    - We realize that the models do not cover all the possibilities of the process, this was an option taken in favor of a more readable model that would still represent the most common and effective ways to execute it, providing enough understanding about it as well
+    - these models still suit the provided data very well, having very high scores in the fitness evaluations, that is, they are very close to the behavior understood through the input data
+- A next step in the development of these models is to validate the hypothesis and manually modify these algorithm-generated models to better suit the domain specificities
+    - add the repeatable activities (e.g., Payment)
+    - XOR relation between Payment and Send for Credit Collection
+    - make the prefecture related activities optional
+    - order the prefecture appeal related activities
+    - investigate further the process execution with activities that are related to the judge appeal process
+- suggestions
+    - once again, adding a activity that registers the end of the process would be beneficial to distinguish traces that had successful appeals and ones that are still running
+    - distinguishing as well the payment of the fine, the expenses and the penalty would improve the understandability of the data and, therefore, the model, allowing for more precise conclusions
+    - also to decrease the length of each process execution, we suggest the faster processing of the appeals initiated by the offenders, as it is clear in the data the time gap that exists in this step
+    - overall, we also notice a improvement possibility in all activities that mark  a handover of work from or to the police department. A great improvement in the average process duration would come from more strict deadlines for these activities, specially for Send Appeal to Prefecture and Notify Result Appeal to Offender
+- payment related problems
+    - we note a great problem with under-payment and delay of the payment, there's a opportunity
+    - some confusion from the part of the offender might occur when the payment is performed about the distinction between the fine, the penalty and the expenses, therefore we suggest a more clear note
+    - more clear deadlines for sending the reminder could also greatly improve the duration of the process
+    - Also, we concluded that some delay problems by the offenders may occur due to them forgetting to pay the amounts, so increasing the amount of notices might be a reasonable trade-off to reduce delays and simplify the executions of the process
+    - another improvement opportunity we imagine is about the credit collections, which could substantially reduce the average duration of the traces (more than half)
+
+
+
 \section*{Appendix}
 
 \begin{table}[H]
