@@ -312,39 +312,26 @@ A standardized deadline for the sending of the reminder should be implemented, s
 
 \section{Q5. Summary and Conclusion}
 
-- Input analysis:
-    - data is in good state, not too much noise
-    - data acquisition since 2000 has paid off as it is possible to generate concise models and have a good understanding of the several faces of the process
-    - some noise exists, more than once we found process executions (traces) that were missing an activity that was necessary given the previous and following
-    - even though some noise exists, the data was very clean and not much preprocessing was necessary (we assume the data received came straight from the client), so the acquisition process is good
-    - one suggestion from the team to the acquisition process is for the registering of the closing of a case as a specific activity, like "Fine Dismissed", as it improves the inference from the data
-- process split in two, with and without appeal
-    - not only a technical split, but a split because of the nature of the process
-    - Besides the extra activities
-    - traces with appeal take twice as much time
-    - traces with appeal have a much bigger diversity
-- this way, we understand the process through the two models seen in figure X and Y (without and with appeals)
-    - We realize that the models do not cover all the possibilities of the process, this was an option taken in favor of a more readable model that would still represent the most common and effective ways to execute it, providing enough understanding about it as well
-    - these models still suit the provided data very well, having very high scores in the fitness evaluations, that is, they are very close to the behavior understood through the input data
-- A next step in the development of these models is to validate the hypothesis and manually modify these algorithm-generated models to better suit the domain specificities
-    - add the repeatable activities (e.g., Payment)
-    - XOR relation between Payment and Send for Credit Collection
-    - make the prefecture related activities optional
-    - order the prefecture appeal related activities
-    - investigate further the process execution with activities that are related to the judge appeal process
-- suggestions
-    - once again, adding a activity that registers the end of the process would be beneficial to distinguish traces that had successful appeals and ones that are still running
-    - distinguishing as well the payment of the fine, the expenses and the penalty would improve the understandability of the data and, therefore, the model, allowing for more precise conclusions
-    - also to decrease the length of each process execution, we suggest the faster processing of the appeals initiated by the offenders, as it is clear in the data the time gap that exists in this step
-    - overall, we also notice a improvement possibility in all activities that mark  a handover of work from or to the police department. A great improvement in the average process duration would come from more strict deadlines for these activities, specially for Send Appeal to Prefecture and Notify Result Appeal to Offender
-- payment related problems
-    - we note a great problem with under-payment and delay of the payment, there's a opportunity
-    - some confusion from the part of the offender might occur when the payment is performed about the distinction between the fine, the penalty and the expenses, therefore we suggest a more clear note
-    - more clear deadlines for sending the reminder could also greatly improve the duration of the process
-    - Also, we concluded that some delay problems by the offenders may occur due to them forgetting to pay the amounts, so increasing the amount of notices might be a reasonable trade-off to reduce delays and simplify the executions of the process
-    - another improvement opportunity we imagine is about the credit collections, which could substantially reduce the average duration of the traces (more than half)
+In this work, we analysed the process of fine management through the provided event log. The process and the data were tackled through several different approaches, from the sequential relations between the activities to the efficiency of their execution and the impact of this in process outcomes.
 
+The first highlight is related to the process data, which is, assuming it came as it is acquired, in a very good state. The data has a very large volume, and the acquisition since 2000 paid off as it is possible to understand the several different possibilities of executing the process. Even though, noise still exists in the data. More than once some traces (registrations of a given execution of the process) were found with missing activities, which were necessary given the previous and following activities. Another suggestion from our team is to mark the ending of the execution clearly, with an activity like "Fine Dismissed", as it would improve the inference of information about the process from the data and, therefore, improve the insights.
 
+We understand and analyse, then, the process in two variants: one that involves appeals from the offender and one that does not. This has paid off as the presence of these appeals represent not only a technical division but also differ the nature of the process, as traces with appeal take usually twice as much time and have a bigger diversity. This way, we model the process through the two diagrams present in figures \ref{fig:im_no_appeals} and \ref{fig:im_appeals}. The models, as presented, do not cover all the process execution possibilities. This was a conscious choice as to favor its readability and simplicity while still representing the most common and effective ways to execute the process. This, in our opinion, maximizes the understanding of the process. We highlight that these models still suit the provided data very well, achieving high scores in the analysis performed, showing that they are very close to the behavior understood through the input data.
+
+A natural next step in the development of this models is to validate our hypothesis and modify these algorithm-generated diagrams to better suit the domain specificities. Hypothesis such as:
+
+\begin{enumerate}
+    \item Representation of the repeatable activities, like the \texttt{Payment} activity.
+    \item Exclusive-or relation between \texttt{Payment} and \texttt{Send for Credit Collection}.
+    \item Prefecture related activities are not mandatory.
+    \item Imply the order of the prefecture appeal related activities.
+\end{enumerate}
+
+As well, a further investigation of the execution of the activities that are related to the appeals that involve a judge could bring a better understanding.
+
+Despite the possible improvements, upon the current model-data conjunction, we derive suggestions for the improvement of both the analysis and the process execution. As discussed beforehand, an end activity that suggests the status in which the fine ended would better indicate the result of the executions, like the success of the appeals. Distinguishing the different types of payment that can occur for the fine, the expenses and the penalty could help to spot where the problem of the lack of payment and its delays lies. To decrease the average length of the process executions, we suggest the faster processing of the appeals initiated by the offenders, as it is clear through the data that exists a big time gap in these moments. Overall, we also notice an improvement possibility in all activities that mark a handover of work from or to the police department. A great improvement in the average process duration would come from more strict deadlines for these activities, specially for \texttt{Send Appeal to Prefecture} and \texttt{Notify Result Appeal to Offender}.
+
+A great improvement opportunity that arises from the analysis of the data is on the payment-related activities. We note there is a great problem with under-payment and delay, as already discussed. It is possible to suppose a confusion from the offenders regarding the amount and deadlines of the fine, the penalty and the expenses. So we suggest more clear notifications and more clear deadlines for sending the reminder, tackling both the payment problems and the duration of the process. We conclude, also, that some delay might occur from the offenders forgetting to pay the due amounts. Therefore, increasing the amount of notices might be a reasonable trade-off to reduce delays and simplify the executions of the process. Another improvement opportunity spotted is on the credit collections, which occur with low frequency. The analysis indicates that increasing this frequency could reduce the average duration of the traces that require this activity substantially (more than half).
 
 \section*{Appendix}
 
